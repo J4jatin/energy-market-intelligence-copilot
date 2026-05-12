@@ -1,0 +1,6 @@
+*.pyc
+__pycache__/
+.env
+data/faiss_index/
+data/newsletters/
+.DS_Store

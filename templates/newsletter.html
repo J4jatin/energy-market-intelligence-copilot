@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Energy Market Intelligence — {{ generated_at }}</title>
+  <style>
+    /* Reset */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: #f4f6f9;
+      color: #1a1a2e;
+      line-height: 1.6;
+    }
+
+    /* Wrapper */
+    .wrapper {
+      max-width: 700px;
+      margin: 32px auto;
+      background: #ffffff;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+    }
+
+    /* Header */
+    .header {
+      background: linear-gradient(135deg, #e8400a 0%, #c4230a 100%);
+      padding: 36px 40px;
+      text-align: center;
+    }
+    .header .logo {
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.8);
+      margin-bottom: 8px;
+    }
+    .header h1 {
+      font-size: 26px;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 6px;
+    }
+    .header .date {
+      font-size: 13px;
+      color: rgba(255,255,255,0.75);
+    }
+
+    /* Stats bar */
+    .stats-bar {
+      background: #1a1a2e;
+      display: flex;
+      justify-content: space-around;
+      padding: 16px 40px;
+    }
+    .stat {
+      text-align: center;
+    }
+    .stat .number {
+      font-size: 22px;
+      font-weight: 700;
+      color: #e8400a;
+    }
+    .stat .label {
+      font-size: 11px;
+      color: rgba(255,255,255,0.6);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    /* Content area */
+    .content {
+      padding: 32px 40px;
+    }
+
+    /* Section */
+    .section {
+      margin-bottom: 36px;
+    }
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 16px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid #f0f0f5;
+    }
+    .section-tag {
+      background: #e8400a;
+      color: white;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      padding: 3px 10px;
+      border-radius: 20px;
+    }
+    .section-tag.general { background: #2563eb; }
+    .section-tag.eon { background: #e11d48; }
+    .section-tag.rwe { background: #16a34a; }
+    .section-tag.vattenfall { background: #7c3aed; }
+    .section-tag.uniper { background: #0891b2; }
+    .section-title {
+      font-size: 17px;
+      font-weight: 700;
+      color: #1a1a2e;
+    }
+
+    /* Article cards */
+    .article-card {
+      background: #f8f9fc;
+      border: 1px solid #e8eaf0;
+      border-radius: 8px;
+      padding: 16px 18px;
+      margin-bottom: 12px;
+      transition: border-color 0.2s;
+    }
+    .article-card:hover { border-color: #e8400a; }
+    .article-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: #1a1a2e;
+      margin-bottom: 6px;
+    }
+    .article-title a {
+      color: #1a1a2e;
+      text-decoration: none;
+    }
+    .article-title a:hover { color: #e8400a; }
+    .article-summary {
+      font-size: 13px;
+      color: #555;
+      margin-bottom: 8px;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .article-meta {
+      display: flex;
+      gap: 12px;
+      font-size: 11px;
+      color: #999;
+    }
+    .article-meta .source { font-weight: 600; color: #e8400a; }
+
+    /* AI Summary box */
+    .ai-summary {
+      background: linear-gradient(135deg, #fff8f6 0%, #fff0eb 100%);
+      border: 1px solid #fcd9c8;
+      border-left: 4px solid #e8400a;
+      border-radius: 8px;
+      padding: 18px 20px;
+      margin-bottom: 28px;
+    }
+    .ai-summary-label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #e8400a;
+      margin-bottom: 8px;
+    }
+    .ai-summary p {
+      font-size: 14px;
+      color: #333;
+      line-height: 1.7;
+    }
+
+    /* Footer */
+    .footer {
+      background: #f8f9fc;
+      border-top: 1px solid #e8eaf0;
+      padding: 24px 40px;
+      text-align: center;
+    }
+    .footer p {
+      font-size: 12px;
+      color: #999;
+      margin-bottom: 6px;
+    }
+    .footer .team {
+      font-weight: 600;
+      color: #555;
+      font-size: 13px;
+    }
+    .footer .unsubscribe a {
+      color: #e8400a;
+      text-decoration: none;
+      font-size: 11px;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrapper">
+
+    <!-- Header -->
+    <div class="header">
+      <div class="logo">Market Intelligence · Automated Report</div>
+      <h1>⚡ Energy Market Digest</h1>
+      <div class="date">{{ generated_at }} · Weekly Competitive Intelligence</div>
+    </div>
+
+    <!-- Stats bar -->
+    <div class="stats-bar">
+      <div class="stat">
+        <div class="number">{{ total_articles }}</div>
+        <div class="label">Articles Analyzed</div>
+      </div>
+      <div class="stat">
+        <div class="number">{{ categories|length }}</div>
+        <div class="label">Competitors Tracked</div>
+      </div>
+      <div class="stat">
+        <div class="number">{{ week_number }}</div>
+        <div class="label">Week {{ year }}</div>
+      </div>
+    </div>
+
+    <!-- Content -->
+    <div class="content">
+
+      <!-- AI Executive Summary -->
+      {% if ai_summary %}
+      <div class="ai-summary">
+        <div class="ai-summary-label">🤖 AI Executive Summary</div>
+        <p>{{ ai_summary }}</p>
+      </div>
+      {% endif %}
+
+      <!-- Competitor Sections -->
+      {% for category, articles in categories.items() %}
+      <div class="section">
+        <div class="section-header">
+          <span class="section-tag {{ category|lower|replace(' ', '-') }}">{{ category }}</span>
+          <span class="section-title">{{ articles|length }} article{{ 's' if articles|length != 1 else '' }} this week</span>
+        </div>
+
+        {% for article in articles[:3] %}
+        <div class="article-card">
+          <div class="article-title">
+            <a href="{{ article.link }}" target="_blank">{{ article.title }}</a>
+          </div>
+          {% if article.summary %}
+          <div class="article-summary">{{ article.summary[:300] }}{% if article.summary|length > 300 %}...{% endif %}</div>
+          {% endif %}
+          <div class="article-meta">
+            <span class="source">{{ article.source }}</span>
+            <span>{{ article.published }}</span>
+          </div>
+        </div>
+        {% endfor %}
+
+        {% if articles|length > 3 %}
+        <p style="font-size:12px; color:#999; text-align:right; margin-top:4px;">
+          + {{ articles|length - 3 }} more articles not shown
+        </p>
+        {% endif %}
+      </div>
+      {% endfor %}
+
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+      <p class="team">Market Intelligence Team · Automated via Python</p>
+      <p>This newsletter was auto-generated by the Energy Market Intelligence Copilot.</p>
+      <p>Published to SharePoint · {{ generated_at }}</p>
+      <br/>
+      <p class="unsubscribe"><a href="#">Manage preferences</a> · <a href="#">Unsubscribe</a></p>
+    </div>
+
+  </div>
+</body>
+</html>

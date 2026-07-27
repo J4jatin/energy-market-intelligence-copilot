@@ -1,8 +1,12 @@
+# ===== Core LLM / RAG =====
 langchain
 langchain-community
-langchain-openai
+langchain-groq
 openai
+fastembed
 faiss-cpu
+
+# ===== Data / scraping / newsletter =====
 requests
 beautifulsoup4
 feedparser

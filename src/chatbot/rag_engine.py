@@ -1,8 +1,9 @@
 """
 RAG (Retrieval-Augmented Generation) engine for Market Intelligence Q&A.
 
-Uses LangChain + FAISS + HuggingFace embeddings + OpenAI GPT-4o.
-Supports conversational memory for multi-turn Q&A sessions.
+Modern LangChain (v1) implementation using LCEL runnables:
+  FastEmbed embeddings + FAISS retrieval + Groq (Llama 3.3 70B) generation,
+with a lightweight conversation-history buffer for multi-turn Q&A.
 """
 
 import os
@@ -11,14 +12,13 @@ from pathlib import Path
 from typing import Optional
 
 from dotenv import load_dotenv
-from langchain.chains import ConversationalRetrievalChain
-from langchain.memory import ConversationBufferWindowMemory
-from langchain_community.embeddings import HuggingFaceEmbeddings
+from langchain_core.prompts import ChatPromptTemplate
+from langchain_core.messages import HumanMessage, AIMessage
+from langchain_community.embeddings import FastEmbedEmbeddings
 from langchain_community.vectorstores import FAISS
-from langchain_openai import ChatOpenAI
-from langchain.prompts import PromptTemplate
+from langchain_groq import ChatGroq
 
-from .prompts import SYSTEM_PROMPT, CONDENSE_QUESTION_PROMPT, NO_CONTEXT_RESPONSE
+from .prompts import SYSTEM_PROMPT, NO_CONTEXT_RESPONSE
 
 load_dotenv()
 logging.basicConfig(level=logging.INFO)
@@ -34,40 +34,57 @@ class MarketIntelligenceRAG:
 
     Example:
         rag = MarketIntelligenceRAG()
-        answer = rag.ask("What is RWE's current offshore wind strategy?")
-        print(answer["answer"])
+        result = rag.ask("What is RWE's current offshore wind strategy?")
+        print(result["answer"])
     """
 
     def __init__(
         self,
-        model_name: str = "gpt-4o-mini",
+        model_name: Optional[str] = None,
         temperature: float = 0.1,
         top_k: int = 5,
         memory_window: int = 5,
     ):
-        self.model_name = model_name
+        self.model_name = model_name or os.getenv("GROQ_MODEL", "llama-3.3-70b-versatile")
         self.temperature = temperature
         self.top_k = top_k
         self.memory_window = memory_window
 
         self._embeddings = None
         self._vectorstore = None
-        self._chain = None
+        self._retriever = None
+        self._llm = None
+        self._prompt = None
+        self._history: list = []  # list of (human, ai) tuples
         self._is_ready = False
 
         self._initialize()
 
     def _initialize(self):
-        """Load embeddings, vector store, and build the QA chain."""
+        """Load embeddings, vector store, LLM, and prompt."""
         try:
             self._embeddings = self._load_embeddings()
             self._vectorstore = self._load_vectorstore()
-            self._chain = self._build_chain()
+            self._retriever = self._vectorstore.as_retriever(
+                search_kwargs={"k": self.top_k}
+            )
+            self._llm = ChatGroq(
+                model=self.model_name,
+                temperature=self.temperature,
+                groq_api_key=os.getenv("GROQ_API_KEY"),
+            )
+            self._prompt = ChatPromptTemplate.from_messages(
+                [
+                    ("system", SYSTEM_PROMPT),
+                    ("placeholder", "{history}"),
+                    ("human", "{question}"),
+                ]
+            )
             self._is_ready = True
             logger.info("✅ RAG engine initialized successfully")
         except FileNotFoundError:
             logger.warning(
-                "⚠️  FAISS index not found. Run data_ingestion.py first.\n"
+                "⚠️  FAISS index not found. Run data_ingestion.py first:\n"
                 "   python src/chatbot/data_ingestion.py"
             )
             self._is_ready = False
@@ -75,13 +92,9 @@ class MarketIntelligenceRAG:
             logger.error(f"Failed to initialize RAG engine: {e}")
             self._is_ready = False
 
-    def _load_embeddings(self) -> HuggingFaceEmbeddings:
-        """Load local sentence-transformer embeddings (no API key needed)."""
-        return HuggingFaceEmbeddings(
-            model_name="sentence-transformers/all-MiniLM-L6-v2",
-            model_kwargs={"device": "cpu"},
-            encode_kwargs={"normalize_embeddings": True},
-        )
+    def _load_embeddings(self) -> FastEmbedEmbeddings:
+        """Load local FastEmbed embeddings (ONNX, no API key, no torch)."""
+        return FastEmbedEmbeddings(model_name="BAAI/bge-small-en-v1.5")
 
     def _load_vectorstore(self) -> FAISS:
         """Load FAISS index from disk."""
@@ -93,87 +106,56 @@ class MarketIntelligenceRAG:
             allow_dangerous_deserialization=True,
         )
 
-    def _build_chain(self) -> ConversationalRetrievalChain:
-        """Build the conversational retrieval chain with memory."""
-        llm = ChatOpenAI(
-            model=self.model_name,
-            temperature=self.temperature,
-            openai_api_key=os.getenv("OPENAI_API_KEY"),
+    @staticmethod
+    def _format_docs(docs) -> str:
+        """Concatenate retrieved chunks with their source labels for grounding."""
+        return "\n\n".join(
+            f"[Source: {d.metadata.get('source', 'Unknown')}]\n{d.page_content}"
+            for d in docs
         )
-
-        retriever = self._vectorstore.as_retriever(
-            search_type="similarity",
-            search_kwargs={"k": self.top_k},
-        )
-
-        memory = ConversationBufferWindowMemory(
-            k=self.memory_window,
-            memory_key="chat_history",
-            output_key="answer",
-            return_messages=True,
-        )
-
-        qa_prompt = PromptTemplate(
-            input_variables=["context", "question"],
-            template=SYSTEM_PROMPT + "\n\nQuestion: {question}\n\nAnswer:",
-        )
-
-        condense_prompt = PromptTemplate(
-            input_variables=["chat_history", "question"],
-            template=CONDENSE_QUESTION_PROMPT,
-        )
-
-        chain = ConversationalRetrievalChain.from_llm(
-            llm=llm,
-            retriever=retriever,
-            memory=memory,
-            combine_docs_chain_kwargs={"prompt": qa_prompt},
-            condense_question_prompt=condense_prompt,
-            return_source_documents=True,
-            verbose=False,
-        )
-
-        return chain
 
     def ask(self, question: str) -> dict:
         """
-        Ask a question against the market intelligence knowledge base.
+        Ask a question against the market-intelligence knowledge base.
 
         Returns:
-            dict with keys: answer, source_documents
+            dict with keys: answer (str), source_documents (list[dict])
         """
         if not self._is_ready:
-            return {
-                "answer": NO_CONTEXT_RESPONSE,
-                "source_documents": [],
-            }
+            return {"answer": NO_CONTEXT_RESPONSE, "source_documents": []}
 
         try:
-            result = self._chain.invoke({"question": question})
+            docs = self._retriever.invoke(question)
+            context = self._format_docs(docs)
+
+            history_msgs = []
+            for human, ai in self._history[-self.memory_window:]:
+                history_msgs.append(HumanMessage(content=human))
+                history_msgs.append(AIMessage(content=ai))
+
+            messages = self._prompt.format_messages(
+                context=context, history=history_msgs, question=question
+            )
+            answer = self._llm.invoke(messages).content
+            self._history.append((question, answer))
+
             sources = [
                 {
-                    "source": doc.metadata.get("source", "Unknown"),
-                    "page": doc.metadata.get("page", "N/A"),
-                    "snippet": doc.page_content[:200] + "...",
+                    "source": d.metadata.get("source", "Unknown"),
+                    "page": d.metadata.get("page", "N/A"),
+                    "snippet": d.page_content[:200] + "...",
                 }
-                for doc in result.get("source_documents", [])
+                for d in docs
             ]
-            return {
-                "answer": result["answer"],
-                "source_documents": sources,
-            }
+            return {"answer": answer, "source_documents": sources}
         except Exception as e:
             logger.error(f"Error during RAG query: {e}")
-            return {
-                "answer": f"Error processing your question: {e}",
-                "source_documents": [],
-            }
+            return {"answer": f"Error processing your question: {e}", "source_documents": []}
 
     def reset_memory(self):
         """Clear conversation history."""
-        if self._chain and hasattr(self._chain, "memory"):
-            self._chain.memory.clear()
-            logger.info("Conversation memory cleared")
+        self._history = []
+        logger.info("Conversation memory cleared")
 
     def get_similar_documents(self, query: str, k: int = 3) -> list:
         """Retrieve top-k similar documents without generating an answer."""
@@ -188,13 +170,14 @@ class MarketIntelligenceRAG:
     def reload_index(self):
         """Reload the FAISS index (e.g. after ingesting new documents)."""
         self._vectorstore = self._load_vectorstore()
-        self._chain = self._build_chain()
+        self._retriever = self._vectorstore.as_retriever(
+            search_kwargs={"k": self.top_k}
+        )
         self._is_ready = True
         logger.info("Index reloaded")
 
 
 if __name__ == "__main__":
-    # Quick test
     rag = MarketIntelligenceRAG()
     if rag.is_ready:
         result = rag.ask("What are the main renewable energy strategies of E.ON?")

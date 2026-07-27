@@ -1,0 +1,34 @@
+German & European Energy Market Trends — 2025 Outlook
+(Illustrative sample document for the Market Intelligence Copilot knowledge base)
+
+Energiewende and policy context
+Germany's Energiewende continues to drive the energy transition, with policy targeting a large
+majority share of renewables in gross electricity consumption by 2030. The coal phase-out,
+nuclear exit (completed in 2023), and expansion of wind and solar remain the defining structural
+forces in the market.
+
+Renewable build-out
+Onshore wind, offshore wind, and solar PV additions are accelerating, supported by faster
+permitting rules and dedicated offshore-wind auction volumes. Grid expansion — particularly
+north-south HVDC corridors such as SuedLink — is a critical bottleneck for integrating northern
+wind into southern demand centres.
+
+Power prices and flexibility
+Wholesale power prices remain volatile, shaped by gas prices, carbon (EU ETS) costs, and weather-
+driven renewable output. Flexibility assets — batteries, demand response, and hydrogen-ready gas
+plants — are increasingly valuable to balance intermittent generation.
+
+Hydrogen and electrification
+Green hydrogen is a strategic priority for decarbonising industry (steel, chemicals) and providing
+long-duration backup. Electrification of heat (heat pumps) and transport (EVs) is expanding retail
+demand and creating new customer-solutions markets.
+
+Regulatory drivers
+Key frameworks include the EU Green Deal, "Fit for 55", the EU Emissions Trading System, and the
+German Renewable Energy Sources Act (EEG). Grid returns are regulated by the Bundesnetzagentur.
+
+Competitive implications
+Generation-led players (RWE, Vattenfall, Ørsted) compete on renewables build-out and offshore
+wind. Network- and customer-led players (E.ON) compete on grid reliability and retail solutions.
+EnBW straddles both models. Success increasingly depends on execution speed, access to capital,
+grid connection timing, and supply-chain security for turbines and batteries.

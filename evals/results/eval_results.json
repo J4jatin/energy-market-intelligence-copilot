@@ -1,0 +1,68 @@
+{
+  "model": "llama-3.3-70b-versatile",
+  "n_questions": 8,
+  "summary": {
+    "faithfulness": 1.0,
+    "answer_relevancy": 1.0,
+    "context_precision": 0.35,
+    "context_recall": 1.0
+  },
+  "per_question": [
+    {
+      "question": "What are E.ON's two core business segments after its restructuring?",
+      "faithfulness": 1.0,
+      "answer_relevancy": 1.0,
+      "context_precision": 0.6,
+      "context_recall": 1.0
+    },
+    {
+      "question": "What is the name of RWE's renewables growth programme and what does it target?",
+      "faithfulness": 1.0,
+      "answer_relevancy": 1.0,
+      "context_precision": 0.2,
+      "context_recall": 1.0
+    },
+    {
+      "question": "In which regions does RWE develop and operate offshore wind farms?",
+      "faithfulness": 1.0,
+      "answer_relevancy": 1.0,
+      "context_precision": 0.2,
+      "context_recall": 1.0
+    },
+    {
+      "question": "What is Vattenfall's stated mission?",
+      "faithfulness": 1.0,
+      "answer_relevancy": 1.0,
+      "context_precision": 0.2,
+      "context_recall": 1.0
+    },
+    {
+      "question": "Besides electricity, which business is significant for Vattenfall and in which cities?",
+      "faithfulness": 1.0,
+      "answer_relevancy": 1.0,
+      "context_precision": 0.4,
+      "context_recall": 1.0
+    },
+    {
+      "question": "What is EnBW known for in the EV-charging market?",
+      "faithfulness": 1.0,
+      "answer_relevancy": 1.0,
+      "context_precision": 0.4,
+      "context_recall": 1.0
+    },
+    {
+      "question": "Which transmission infrastructure does EnBW co-develop through TransnetBW?",
+      "faithfulness": 1.0,
+      "answer_relevancy": 1.0,
+      "context_precision": 0.4,
+      "context_recall": 1.0
+    },
+    {
+      "question": "Which key regulatory frameworks drive the German and European energy market?",
+      "faithfulness": 1.0,
+      "answer_relevancy": 1.0,
+      "context_precision": 0.4,
+      "context_recall": 1.0
+    }
+  ]
+}

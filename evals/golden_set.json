@@ -1,0 +1,34 @@
+[
+  {
+    "question": "What are E.ON's two core business segments after its restructuring?",
+    "ground_truth": "Energy networks (regulated electricity and gas distribution grids) and customer solutions (retail supply, e-mobility, and energy efficiency services)."
+  },
+  {
+    "question": "What is the name of RWE's renewables growth programme and what does it target?",
+    "ground_truth": "RWE's 'Growing Green' programme targets a large build-out of onshore wind, offshore wind, solar PV, and batteries, plus hydrogen and flexible backup generation, while phasing out coal."
+  },
+  {
+    "question": "In which regions does RWE develop and operate offshore wind farms?",
+    "ground_truth": "The North Sea and Baltic Sea, the UK, and the US East Coast."
+  },
+  {
+    "question": "What is Vattenfall's stated mission?",
+    "ground_truth": "To enable fossil-free living within one generation."
+  },
+  {
+    "question": "Besides electricity, which business is significant for Vattenfall and in which cities?",
+    "ground_truth": "District heating, particularly in Sweden, Berlin (Germany), and Amsterdam (the Netherlands)."
+  },
+  {
+    "question": "What is EnBW known for in the EV-charging market?",
+    "ground_truth": "EnBW is one of Germany's largest operators of public high-power (HPC) fast-charging infrastructure for electric vehicles."
+  },
+  {
+    "question": "Which transmission infrastructure does EnBW co-develop through TransnetBW?",
+    "ground_truth": "North-south HVDC transmission corridors such as SuedLink, to move northern wind power to southern demand centres."
+  },
+  {
+    "question": "Which key regulatory frameworks drive the German and European energy market?",
+    "ground_truth": "The EU Green Deal, 'Fit for 55', the EU Emissions Trading System (ETS), and the German Renewable Energy Sources Act (EEG); grid returns are regulated by the Bundesnetzagentur."
+  }
+]

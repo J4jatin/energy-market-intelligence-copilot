@@ -1,0 +1,31 @@
+E.ON SE — Competitor Intelligence Brief
+(Illustrative sample document for the Market Intelligence Copilot knowledge base)
+
+Company overview
+E.ON SE is a German multinational electric utility headquartered in Essen, Germany. After its
+2016–2018 restructuring, E.ON refocused its business on two core segments: energy networks
+(regulated electricity and gas distribution grids) and customer solutions (retail supply,
+e-mobility, and energy efficiency services). It divested most of its conventional generation to
+RWE as part of the asset swap involving innogy.
+
+Strategy and positioning
+E.ON's strategy centres on being a pure-play energy networks and customer-solutions operator
+rather than a power generator. Its regulated grid business provides stable, predictable returns,
+while its customer-solutions arm pursues growth in distributed energy, heat pumps, EV charging
+infrastructure, and digital energy management.
+
+Renewable and grid focus
+E.ON invests heavily in distribution-grid modernisation to accommodate rising volumes of
+decentralised renewable generation (rooftop solar, community wind). Its priority is grid
+digitalisation, smart metering rollout, and expanding EV charging networks across Germany,
+the UK, Sweden, and Central-Eastern Europe.
+
+Recent developments
+- Continued large multi-year capital programme aimed at expanding and digitalising distribution grids.
+- Growth in heat-pump and residential-solar installations through its customer-solutions unit.
+- Expansion of public and depot EV-charging infrastructure.
+
+Key competitive takeaways
+E.ON differentiates on grid reliability and a broad retail customer base. Its main exposure is
+regulatory (grid-return frameworks set by the Bundesnetzagentur) rather than commodity-price
+driven. Compared with RWE, E.ON carries far less generation and merchant-power risk.

@@ -107,14 +107,15 @@ def generate_ai_summary(snapshot: Dict) -> str:
     Use OpenAI to generate an executive summary of the market snapshot.
     Falls back to default summary if API key not set.
     """
-    api_key = os.getenv("OPENAI_API_KEY")
+    api_key = os.getenv("GROQ_API_KEY")
     if not api_key:
-        logger.warning("No OPENAI_API_KEY — using default summary")
+        logger.warning("No GROQ_API_KEY — using default summary")
         return ""
 
     try:
         from openai import OpenAI
-        client = OpenAI(api_key=api_key)
+        # Groq is OpenAI-compatible — reuse the OpenAI client against Groq's endpoint
+        client = OpenAI(api_key=api_key, base_url="https://api.groq.com/openai/v1")
 
         # Build a compact text representation
         stories = []
@@ -129,7 +130,7 @@ def generate_ai_summary(snapshot: Dict) -> str:
         )
 
         response = client.chat.completions.create(
-            model="gpt-4o-mini",
+            model=os.getenv("GROQ_MODEL", "llama-3.3-70b-versatile"),
             messages=[{"role": "user", "content": prompt}],
             max_tokens=200,
             temperature=0.3,

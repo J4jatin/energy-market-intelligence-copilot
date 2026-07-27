@@ -1,6 +1,10 @@
 *.pyc
 __pycache__/
 .env
+.venv/
+venv/
+*.egg-info/
+.pytest_cache/
 data/faiss_index/
 data/newsletters/
 .DS_Store

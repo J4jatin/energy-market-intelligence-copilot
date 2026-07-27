@@ -9,13 +9,13 @@ import logging
 from pathlib import Path
 from typing import List
 
-from langchain.text_splitter import RecursiveCharacterTextSplitter
+from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_community.document_loaders import (
     PyPDFLoader,
     TextLoader,
     DirectoryLoader,
 )
-from langchain_community.embeddings import HuggingFaceEmbeddings
+from langchain_community.embeddings import FastEmbedEmbeddings
 from langchain_community.vectorstores import FAISS
 
 logging.basicConfig(level=logging.INFO)
@@ -32,12 +32,8 @@ CHUNK_OVERLAP = 200
 
 
 def get_embeddings():
-    """Load a local HuggingFace embedding model (no API key required)."""
-    return HuggingFaceEmbeddings(
-        model_name="sentence-transformers/all-MiniLM-L6-v2",
-        model_kwargs={"device": "cpu"},
-        encode_kwargs={"normalize_embeddings": True},
-    )
+    """Load local FastEmbed embeddings (ONNX, no API key, no torch)."""
+    return FastEmbedEmbeddings(model_name="BAAI/bge-small-en-v1.5")
 
 
 def load_documents(source_dir: Path) -> List:

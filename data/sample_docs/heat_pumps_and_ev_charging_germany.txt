@@ -1,0 +1,26 @@
+Electrification of Heat & Transport in Germany — Market Note
+(Illustrative sample document for the Market Intelligence Copilot knowledge base)
+
+Heat pumps
+Germany is pushing heat-pump adoption to decarbonise home heating, supported by building-energy rules
+and subsidies. Heat pumps shift heating demand onto the electricity system, growing retail power demand
+and creating new customer-solutions markets. E.ON and others expand heat-pump installation and service
+businesses.
+
+EV charging
+Electric-vehicle adoption drives demand for public and private charging. EnBW operates one of Germany's
+largest public high-power charging (HPC) networks; E.ON expands public and depot charging. Fast-charging
+along motorways and urban hubs is a competitive battleground.
+
+Grid implications
+Electrifying heat and transport raises and reshapes electricity demand, increasing the value of smart
+tariffs, demand flexibility, and distribution-grid upgrades. Time-of-use pricing (e.g., Octopus-style
+smart tariffs) helps shift EV and heat-pump load to low-price, high-renewable periods.
+
+Competitive relevance
+Retail- and network-led players (E.ON, EnBW) benefit from electrification through service growth and
+grid investment, while tech-led retailers (Octopus) compete on flexibility software.
+
+Takeaway
+Electrification of heat and transport is a major long-run demand driver and a growth arena for
+customer-solutions and charging businesses across the German market.

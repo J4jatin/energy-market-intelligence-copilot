@@ -1,0 +1,25 @@
+EU Emissions Trading System & Carbon Pricing — Market Note
+(Illustrative sample document for the Market Intelligence Copilot knowledge base)
+
+What it is
+The EU Emissions Trading System (EU ETS) is the bloc's cap-and-trade carbon market. It puts a price on
+CO2 emissions from power generation and industry, tightening the cap over time to drive decarbonisation.
+
+Impact on power markets
+Carbon prices feed directly into the marginal cost of fossil generation. Higher EU ETS prices make coal
+and gas plants more expensive to run, improving the relative economics of renewables and nuclear and
+influencing wholesale power prices.
+
+Policy evolution
+Under "Fit for 55", the cap tightens faster, free allowances phase down, and a second emissions trading
+system (ETS2) extends carbon pricing to buildings and road transport. A Carbon Border Adjustment
+Mechanism (CBAM) prices embedded carbon in certain imports.
+
+Competitive relevance
+Generators with high fossil exposure (Uniper, parts of RWE) are more sensitive to carbon costs, while
+renewables- and nuclear-heavy players (Ørsted, EDF, Iberdrola) benefit relatively. Carbon-price
+volatility is a key driver of trading and hedging strategies.
+
+Takeaway
+The EU ETS is a structural force pushing capital toward low-carbon generation and shaping the
+profitability of every European energy competitor.

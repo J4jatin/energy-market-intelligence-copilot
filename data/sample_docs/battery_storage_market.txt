@@ -1,0 +1,25 @@
+Battery Energy Storage in Europe — Market Note
+(Illustrative sample document for the Market Intelligence Copilot knowledge base)
+
+Why storage matters
+As wind and solar grow, grid flexibility becomes essential. Battery energy storage systems (BESS)
+store surplus renewable power and release it when generation is low, providing balancing, frequency
+response, and price arbitrage.
+
+Market activity
+Utilities including RWE, EnBW, Vattenfall, and Iberdrola are building grid-scale battery projects,
+often co-located with wind and solar farms. Independent developers and traders also enter the market,
+and virtual power plants aggregate distributed batteries and EVs.
+
+Revenue streams
+BESS earns from ancillary services (frequency regulation), wholesale arbitrage (charging when prices
+are low, discharging when high), and capacity mechanisms. Revenue stacking across these streams
+improves project returns.
+
+Challenges
+Battery economics depend on cell costs, cycle life, grid-connection access, and market design.
+Saturation of ancillary-service markets can compress returns as more batteries connect.
+
+Takeaway
+Storage is a fast-growing flexibility business that complements renewables build-out; most large
+European utilities now treat batteries as a core part of their generation and trading strategy.

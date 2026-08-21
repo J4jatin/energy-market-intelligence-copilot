@@ -130,7 +130,7 @@ def generate_ai_summary(snapshot: Dict) -> str:
         )
 
         response = client.chat.completions.create(
-            model=os.getenv("GROQ_MODEL", "llama-3.3-70b-versatile"),
+            model=os.getenv("GROQ_MODEL", "openai/gpt-oss-20b"),
             messages=[{"role": "user", "content": prompt}],
             max_tokens=200,
             temperature=0.3,

@@ -2,7 +2,7 @@
 LLM-as-judge evaluation metrics for the RAG system (RAGAS-style, dependency-free).
 
 Implements four standard retrieval-augmented-generation metrics, each scored
-0.0-1.0 by an LLM judge (Groq / Llama 3.3 70B):
+0.0-1.0 by an LLM judge (Groq / GPT-OSS):
 
 - faithfulness       : are the answer's claims supported by the retrieved context?
 - answer_relevancy   : does the answer actually address the question?
@@ -26,15 +26,16 @@ load_dotenv()
 logger = logging.getLogger(__name__)
 
 # Small pause between judge calls to stay under Groq's free-tier rate limit.
-JUDGE_THROTTLE_SECONDS = float(os.getenv("EVAL_THROTTLE", "0.7"))
+JUDGE_THROTTLE_SECONDS = float(os.getenv("EVAL_THROTTLE", "1.0"))
 
 
 def judge_llm(temperature: float = 0.0) -> ChatGroq:
     """The LLM used as the evaluation judge (temperature 0 for reproducibility)."""
     return ChatGroq(
-        model=os.getenv("GROQ_MODEL", "llama-3.3-70b-versatile"),
+        model=os.getenv("GROQ_MODEL", "openai/gpt-oss-20b"),
         temperature=temperature,
         groq_api_key=os.getenv("GROQ_API_KEY"),
+        max_retries=6,
     )
 
 

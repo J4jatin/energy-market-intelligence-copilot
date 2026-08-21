@@ -1,0 +1,26 @@
+SuedLink and German Grid Expansion — Infrastructure Note
+(Illustrative sample document for the Market Intelligence Copilot knowledge base)
+
+The north-south challenge
+Germany generates large volumes of wind power in the north but has major industrial demand in the
+south (Bavaria, Baden-Württemberg). Moving that power requires high-voltage direct current (HVDC)
+transmission corridors.
+
+SuedLink
+SuedLink is one of the largest HVDC underground-cable corridors, designed to carry northern wind power
+to southern load centres. It is co-developed by transmission system operators including TransnetBW
+(part of EnBW) and TenneT. Additional corridors such as SuedOstLink complement it.
+
+Why it matters
+Grid expansion is the critical enabler of the Energiewende: without corridors, northern wind is curtailed
+and southern demand relies on other sources. Permitting, local opposition, and construction timelines
+make grid build-out a persistent bottleneck.
+
+Competitive relevance
+Transmission operators (TransnetBW/EnBW, TenneT, Amprion, 50Hertz) run these regulated projects.
+Delays affect offshore/onshore wind developers (RWE, Ørsted, Vattenfall) whose output depends on
+connection and transmission capacity.
+
+Takeaway
+Grid corridors like SuedLink are as decisive for the transition as new generation — timing of these
+projects shapes power flows, prices, and curtailment across Germany.

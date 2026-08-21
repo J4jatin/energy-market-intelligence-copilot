@@ -1,0 +1,24 @@
+Octopus Energy — Competitor Intelligence Brief
+(Illustrative sample document for the Market Intelligence Copilot knowledge base)
+
+Company overview
+Octopus Energy is a UK-based energy retailer and technology company, one of the fastest-growing energy
+suppliers in Europe. It combines renewable electricity supply with a proprietary technology platform.
+
+Strategy and positioning
+Octopus differentiates through technology and customer experience rather than generation scale. Its
+strategy centres on its Kraken software platform, smart tariffs, and flexibility services that reward
+customers for shifting demand to times of abundant renewable power.
+
+Kraken platform
+Kraken is Octopus's cloud-based customer and energy-management platform. Octopus licenses Kraken to
+other utilities worldwide, making software licensing a significant growth business alongside retail.
+
+Flexibility, EVs, and heat
+Octopus offers smart EV-charging and heat-pump tariffs, agile time-of-use pricing, and virtual power
+plant services that aggregate distributed assets to balance the grid.
+
+Key competitive takeaways
+Octopus competes with E.ON and other retailers in supply, but its real edge is software (Kraken) and
+demand flexibility — a different model from asset-heavy generators like RWE. Its main risks are retail
+margin volatility and exposure to wholesale price swings.

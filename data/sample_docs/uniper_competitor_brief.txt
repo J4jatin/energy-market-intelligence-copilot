@@ -1,0 +1,26 @@
+Uniper SE — Competitor Intelligence Brief
+(Illustrative sample document for the Market Intelligence Copilot knowledge base)
+
+Company overview
+Uniper SE is a German energy company headquartered in Düsseldorf, spun off from E.ON in 2016.
+It operates power generation, global energy trading, and gas storage/import infrastructure. After
+the 2022 gas crisis it was stabilised through German government support and effectively nationalised.
+
+Strategy and positioning
+Uniper is repositioning from a fossil-heavy generator toward a decarbonising portfolio. Its strategy
+emphasises security of supply, expanding its gas and LNG infrastructure as a transition bridge, and
+investing in green hydrogen, batteries, and flexible generation.
+
+Hydrogen and gas
+Uniper operates large gas storage facilities and LNG import capacity (including the Wilhelmshaven
+terminal). It is developing green-hydrogen production and hydrogen-ready gas plants, positioning its
+storage assets for future hydrogen use.
+
+Renewables and phase-out
+Uniper is retiring coal capacity and growing renewables and storage, though from a smaller base than
+RWE or Vattenfall. Trading remains a major earnings driver.
+
+Key competitive takeaways
+Uniper competes with RWE in generation and trading and overlaps with EnBW and Vattenfall on gas and
+flexibility. Its distinct edge is gas/LNG storage and import infrastructure; its main risk is the
+speed and cost of decarbonising a historically fossil-heavy fleet under state ownership.

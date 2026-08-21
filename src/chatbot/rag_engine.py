@@ -2,7 +2,7 @@
 RAG (Retrieval-Augmented Generation) engine for Market Intelligence Q&A.
 
 Modern LangChain (v1) implementation using LCEL runnables:
-  FastEmbed embeddings + FAISS retrieval + Groq (Llama 3.3 70B) generation,
+  FastEmbed embeddings + FAISS retrieval + Groq (GPT-OSS) generation,
 with a lightweight conversation-history buffer for multi-turn Q&A.
 """
 
@@ -16,6 +16,9 @@ from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.messages import HumanMessage, AIMessage
 from langchain_community.embeddings import FastEmbedEmbeddings
 from langchain_community.vectorstores import FAISS
+from langchain_community.retrievers import BM25Retriever
+from langchain_community.document_compressors import FlashrankRerank
+from langchain_classic.retrievers import EnsembleRetriever, ContextualCompressionRetriever
 from langchain_groq import ChatGroq
 
 from .prompts import SYSTEM_PROMPT, NO_CONTEXT_RESPONSE
@@ -42,13 +45,24 @@ class MarketIntelligenceRAG:
         self,
         model_name: Optional[str] = None,
         temperature: float = 0.1,
-        top_k: int = 5,
+        top_k: int = 3,
         memory_window: int = 5,
+        hybrid: bool = False,
+        rerank: bool = False,
+        candidate_k: int = 8,
     ):
-        self.model_name = model_name or os.getenv("GROQ_MODEL", "llama-3.3-70b-versatile")
+        self.model_name = model_name or os.getenv("GROQ_MODEL", "openai/gpt-oss-20b")
         self.temperature = temperature
         self.top_k = top_k
         self.memory_window = memory_window
+        # Retrieval strategy — configurable and evaluation-driven.
+        # NOTE: a controlled A/B (see evals/results/eval_comparison.md) showed that on this
+        # clean, semantically-distinct corpus, strong embeddings already retrieve optimally, and
+        # an off-the-shelf (MS-MARCO) reranker slightly HURT precision/recall. So hybrid + rerank
+        # default OFF here; enable them for larger, noisier corpora where they typically help.
+        self.hybrid = hybrid          # BM25 keyword + vector ensemble
+        self.rerank = rerank          # cross-encoder (FlashRank) reranking of candidates
+        self.candidate_k = candidate_k  # candidates pulled before reranking down to top_k
 
         self._embeddings = None
         self._vectorstore = None
@@ -65,13 +79,12 @@ class MarketIntelligenceRAG:
         try:
             self._embeddings = self._load_embeddings()
             self._vectorstore = self._load_vectorstore()
-            self._retriever = self._vectorstore.as_retriever(
-                search_kwargs={"k": self.top_k}
-            )
+            self._retriever = self._build_retriever()
             self._llm = ChatGroq(
                 model=self.model_name,
                 temperature=self.temperature,
                 groq_api_key=os.getenv("GROQ_API_KEY"),
+                max_retries=6,
             )
             self._prompt = ChatPromptTemplate.from_messages(
                 [
@@ -105,6 +118,38 @@ class MarketIntelligenceRAG:
             self._embeddings,
             allow_dangerous_deserialization=True,
         )
+
+    def _build_retriever(self):
+        """
+        Build the retrieval pipeline:
+
+            (1) vector search (FastEmbed + FAISS)
+            (2) + BM25 keyword search, fused via an EnsembleRetriever   [hybrid]
+            (3) + cross-encoder reranking (FlashRank) of the candidates [rerank]
+
+        Reranking selects the best `top_k` chunks from `candidate_k` candidates,
+        which sharply raises context precision over plain vector search.
+        """
+        k = self.candidate_k if self.rerank else self.top_k
+        vector_retriever = self._vectorstore.as_retriever(search_kwargs={"k": k})
+
+        base = vector_retriever
+        if self.hybrid:
+            docs = list(self._vectorstore.docstore._dict.values())
+            if docs:
+                bm25 = BM25Retriever.from_documents(docs)
+                bm25.k = k
+                base = EnsembleRetriever(
+                    retrievers=[bm25, vector_retriever],
+                    weights=[0.4, 0.6],  # favour semantic vector search, keep keyword recall
+                )
+
+        if self.rerank:
+            compressor = FlashrankRerank(top_n=self.top_k)
+            return ContextualCompressionRetriever(
+                base_compressor=compressor, base_retriever=base
+            )
+        return base
 
     @staticmethod
     def _format_docs(docs) -> str:
@@ -158,10 +203,14 @@ class MarketIntelligenceRAG:
         logger.info("Conversation memory cleared")
 
     def get_similar_documents(self, query: str, k: int = 3) -> list:
-        """Retrieve top-k similar documents without generating an answer."""
+        """
+        Retrieve the documents the full pipeline (hybrid + rerank) would use for a
+        query, without generating an answer. Used by the evaluation harness so the
+        metrics reflect the real retrieval strategy.
+        """
         if not self._is_ready:
             return []
-        return self._vectorstore.similarity_search(query, k=k)
+        return self._retriever.invoke(query)
 
     @property
     def is_ready(self) -> bool:
@@ -170,9 +219,7 @@ class MarketIntelligenceRAG:
     def reload_index(self):
         """Reload the FAISS index (e.g. after ingesting new documents)."""
         self._vectorstore = self._load_vectorstore()
-        self._retriever = self._vectorstore.as_retriever(
-            search_kwargs={"k": self.top_k}
-        )
+        self._retriever = self._build_retriever()
         self._is_ready = True
         logger.info("Index reloaded")
 

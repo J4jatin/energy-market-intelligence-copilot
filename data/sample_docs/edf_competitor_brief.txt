@@ -1,0 +1,25 @@
+EDF — Électricité de France — Competitor Intelligence Brief
+(Illustrative sample document for the Market Intelligence Copilot knowledge base)
+
+Company overview
+EDF is a French state-owned multinational utility and one of the world's largest electricity producers,
+with a generation fleet dominated by nuclear power. It operates across France, the UK, Italy, and
+other markets, and was fully renationalised by the French state in 2023.
+
+Strategy and positioning
+EDF's strategy centres on nuclear as low-carbon baseload: extending the life of its existing reactors,
+building new EPR reactors in France and the UK (Hinkley Point C, Sizewell C), and complementing nuclear
+with growing renewables and grid/retail services.
+
+Nuclear and renewables
+EDF's competitive identity is nuclear leadership. It also expands solar, onshore and offshore wind
+(via EDF Renewables), hydro, and storage, and invests in EV charging and energy services.
+
+UK and European presence
+Through EDF Energy (UK) it is a major supplier and nuclear operator. It competes in retail and
+generation across several European markets.
+
+Key competitive takeaways
+EDF's low-carbon nuclear base differentiates it from the wind-led strategies of RWE, Ørsted, and
+Vattenfall. Its main challenges are the cost and schedule risk of new nuclear builds, reactor
+availability, and high debt — balanced by stable, dispatchable low-carbon output.

@@ -1,10 +1,15 @@
 # ===== Core LLM / RAG =====
 langchain
+langchain-classic
 langchain-community
 langchain-groq
 openai
 fastembed
 faiss-cpu
+
+# ===== Hybrid retrieval + reranking =====
+rank-bm25
+flashrank
 
 # ===== Data / scraping / newsletter =====
 requests

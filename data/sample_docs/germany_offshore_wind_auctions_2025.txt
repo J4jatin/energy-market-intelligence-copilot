@@ -1,0 +1,26 @@
+German Offshore Wind Auctions & Capacity Outlook — 2025
+(Illustrative sample document for the Market Intelligence Copilot knowledge base)
+
+Overview
+Germany continues to expand offshore wind in the North Sea and Baltic Sea, with dedicated auction
+rounds and expansion targets that step up capacity through 2030 and 2035. Auctions allocate seabed
+sites and grid-connection slots, and have introduced dynamic-bidding and negative-bidding components.
+
+Key developers
+The main developers competing for German offshore sites include RWE, EnBW, Ørsted, Vattenfall, and
+consortia involving international energy majors. Winning bids depend on turbine supply agreements,
+grid-connection timing, and cost of capital.
+
+Grid connection
+Offshore grid connections are built by transmission operators; delays in offshore converter platforms
+and north-south corridors (see SuedLink) are a recurring bottleneck that affects when farms can deliver
+power to southern demand centres.
+
+Cost pressures
+Supply-chain inflation, higher interest rates, and turbine availability have pressured offshore
+economics, causing some developers (notably Ørsted) to reassess projects. Larger turbines and
+standardised platforms are the industry's response.
+
+Takeaway
+Offshore wind remains central to Germany's energy transition, but execution — auctions, supply chains,
+and grid timing — determines which competitors capture the growth.

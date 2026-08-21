@@ -1,0 +1,25 @@
+Green Hydrogen in Germany — Strategy & Market Note
+(Illustrative sample document for the Market Intelligence Copilot knowledge base)
+
+Policy context
+Green hydrogen is central to Germany's National Hydrogen Strategy, targeting significant electrolyser
+capacity and hydrogen imports to decarbonise hard-to-abate sectors: steel, chemicals, heavy transport,
+and long-duration power backup.
+
+Industry activity
+Energy companies including RWE, Uniper, EnBW, and Iberdrola are developing electrolysis projects and
+hydrogen-ready gas plants. Uniper leverages its gas storage and LNG import infrastructure for future
+hydrogen; RWE pairs hydrogen with its renewables and flexible generation.
+
+Infrastructure
+A planned hydrogen "core network" of pipelines would connect production, import points, and industrial
+demand clusters. Import corridors (via pipelines and shipped derivatives like ammonia) complement
+domestic electrolysis.
+
+Challenges
+Green hydrogen remains costly versus grey hydrogen; scaling depends on cheap renewable power,
+electrolyser cost reductions, offtake certainty, and infrastructure build-out.
+
+Takeaway
+Hydrogen is a strategic growth vector for most large German energy players, but near-term economics
+and infrastructure timing keep it a long-game bet rather than an immediate earnings driver.

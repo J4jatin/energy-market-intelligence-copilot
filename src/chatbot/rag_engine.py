@@ -106,6 +106,19 @@ class MarketIntelligenceRAG:
                 ingest(source_dir=ING_DATA_DIR)
                 self._vectorstore = self._load_vectorstore()
                 self._retriever = self._build_retriever()
+                self._llm = ChatGroq(
+                    model=self.model_name,
+                    temperature=self.temperature,
+                    groq_api_key=os.getenv("GROQ_API_KEY"),
+                    max_retries=6,
+                )
+                self._prompt = ChatPromptTemplate.from_messages(
+                    [
+                        ("system", SYSTEM_PROMPT),
+                        ("placeholder", "{history}"),
+                        ("human", "{question}"),
+                    ]
+                )
                 self._is_ready = True
                 logger.info("✅ Index built and RAG engine initialized successfully")
             except Exception as build_error:

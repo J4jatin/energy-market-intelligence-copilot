@@ -8,11 +8,16 @@ Features:
 """
 
 import logging
+import sys
 from datetime import datetime
 from pathlib import Path
 
 import streamlit as st
 import streamlit.components.v1 as components
+
+# Make sure the project root (parent of this src/ folder) is importable as "src.*"
+# regardless of how/where this script is launched from (needed on Streamlit Cloud).
+sys.path.insert(0, str(Path(__file__).parent.parent))
 
 # Page config — must be first Streamlit call
 st.set_page_config(

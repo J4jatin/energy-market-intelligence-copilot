@@ -6,6 +6,8 @@
 
 Built with **Python · LangChain (v1, LCEL) · LangGraph · FAISS · FastEmbed · Groq (GPT-OSS) · Streamlit**, containerised with **Docker** and tested in **GitHub Actions CI**.
 
+**🚀 Live demo:** [enterprise-search-rag-demo-bbwcfchydfbrfc54yh9ntd.streamlit.app](https://enterprise-search-rag-demo-bbwcfchydfbrfc54yh9ntd.streamlit.app)
+
 ---
 
 ## 🎯 What it does

@@ -12,17 +12,17 @@ Two modes:
 Results are printed and saved to evals/results/ (JSON + Markdown).
 """
 
-import os
-import json
 import argparse
+import json
 import logging
+import os
 import statistics
 from pathlib import Path
 
 from dotenv import load_dotenv
 
-from src.chatbot.rag_engine import MarketIntelligenceRAG
 from evals import evaluator as ev
+from src.chatbot.rag_engine import MarketIntelligenceRAG
 
 load_dotenv()
 logging.basicConfig(level=logging.WARNING)

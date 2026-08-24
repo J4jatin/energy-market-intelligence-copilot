@@ -6,22 +6,24 @@ Modern LangChain (v1) implementation using LCEL runnables:
 with a lightweight conversation-history buffer for multi-turn Q&A.
 """
 
-import os
 import logging
+import os
 from pathlib import Path
-from typing import Optional
 
 from dotenv import load_dotenv
-from langchain_core.prompts import ChatPromptTemplate
-from langchain_core.messages import HumanMessage, AIMessage
-from langchain_community.embeddings import FastEmbedEmbeddings
-from langchain_community.vectorstores import FAISS
-from langchain_community.retrievers import BM25Retriever
+from langchain_classic.retrievers import (
+    ContextualCompressionRetriever,
+    EnsembleRetriever,
+)
 from langchain_community.document_compressors import FlashrankRerank
-from langchain_classic.retrievers import EnsembleRetriever, ContextualCompressionRetriever
+from langchain_community.embeddings import FastEmbedEmbeddings
+from langchain_community.retrievers import BM25Retriever
+from langchain_community.vectorstores import FAISS
+from langchain_core.messages import AIMessage, HumanMessage
+from langchain_core.prompts import ChatPromptTemplate
 from langchain_groq import ChatGroq
 
-from .prompts import SYSTEM_PROMPT, NO_CONTEXT_RESPONSE
+from .prompts import NO_CONTEXT_RESPONSE, SYSTEM_PROMPT
 
 load_dotenv()
 logging.basicConfig(level=logging.INFO)
@@ -43,7 +45,7 @@ class MarketIntelligenceRAG:
 
     def __init__(
         self,
-        model_name: Optional[str] = None,
+        model_name: str | None = None,
         temperature: float = 0.1,
         top_k: int = 3,
         memory_window: int = 5,

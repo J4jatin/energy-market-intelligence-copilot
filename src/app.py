@@ -7,11 +7,12 @@ Features:
   - Pipeline status / run history
 """
 
+import logging
+from datetime import datetime
+from pathlib import Path
+
 import streamlit as st
 import streamlit.components.v1 as components
-import logging
-from pathlib import Path
-from datetime import datetime
 
 # Page config — must be first Streamlit call
 st.set_page_config(
@@ -193,8 +194,11 @@ with tab2:
         if generate_btn:
             with st.spinner("Scraping feeds & generating newsletter..."):
                 try:
+                    from src.newsletter.generator import (
+                        NewsletterGenerator,
+                        generate_ai_summary,
+                    )
                     from src.newsletter.scraper import get_market_snapshot
-                    from src.newsletter.generator import NewsletterGenerator, generate_ai_summary
 
                     snapshot = get_market_snapshot()
                     ai_summary = generate_ai_summary(snapshot) if include_ai_summary else ""
@@ -213,7 +217,9 @@ with tab2:
                     )
 
                     if upload_sp:
-                        from src.newsletter.sharepoint_uploader import SharePointUploader
+                        from src.newsletter.sharepoint_uploader import (
+                            SharePointUploader,
+                        )
                         url = SharePointUploader().upload(output_path)
                         if url:
                             st.success(f"📤 Uploaded to SharePoint: {url}")

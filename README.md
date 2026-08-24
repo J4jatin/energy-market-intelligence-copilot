@@ -1,168 +1,160 @@
 # ⚡ Energy Market Intelligence Copilot
 
-> AI-powered competitive intelligence platform for the energy sector — RAG chatbot + automated HTML newsletter generation + Python workflow automation.
+> An **agentic RAG** platform for the European energy sector — ask natural-language
+> questions about competitors and market trends, grounded in a document knowledge base,
+> with a **rigorous evaluation harness** and a **LangGraph tool-calling agent**.
 
-Built with Python, LangChain, FAISS, Streamlit, and Azure DevOps CI/CD.
+Built with **Python · LangChain (v1, LCEL) · LangGraph · FAISS · FastEmbed · Groq (GPT-OSS) · Streamlit**, containerised with **Docker** and tested in **GitHub Actions CI**.
 
 ---
 
-## 🎯 What It Does
+## 🎯 What it does
 
-| Feature | Description |
+| Capability | Description |
 |---|---|
-| 🤖 **RAG Chatbot** | Ask natural-language questions about energy market competitors (E.ON, RWE, Vattenfall, EnBW). Answers grounded in real documents. |
-| 📰 **Newsletter Generator** | Auto-generates polished HTML competitive intelligence newsletters from live RSS feeds + internal reports |
-| ⚙️ **Workflow Automation** | Scheduled Python pipeline — runs daily, scrapes data, updates vector store, sends newsletter |
-| 🏢 **SharePoint Integration** | Publishes generated newsletters directly to MS SharePoint hub |
-| 🔄 **Azure DevOps CI/CD** | Full pipeline — lint, test, deploy on every push |
+| 🔎 **RAG Q&A** | Ask about energy competitors (E.ON, RWE, Vattenfall, EnBW, Uniper, Ørsted, EDF, Octopus, Iberdrola) and market themes. Answers are grounded in retrieved documents and cite their sources. |
+| 🤖 **Agentic mode** | A LangGraph ReAct agent decides *when* and *how often* to search the knowledge base, reasons across multiple retrievals, and combines tools before answering. |
+| 📊 **Evaluation harness** | A dependency-free, RAGAS-style LLM-as-judge suite scoring **faithfulness, answer relevancy, context precision, context recall** over a golden question set — plus a **controlled A/B mode**. |
+| 🧩 **Configurable retrieval** | Plain vector search by default; optional **hybrid (BM25 + vector) retrieval** and **cross-encoder reranking (FlashRank)** — kept or disabled based on measured results, not assumptions. |
+| 📰 **Newsletter generator** | Renders an HTML competitive-intelligence newsletter from market data with an LLM executive summary. |
 
 ---
 
 ## 🏗️ Architecture
 
 ```
-energy-market-intelligence-copilot/
-├── src/
-│   ├── chatbot/
-│   │   ├── rag_engine.py        # LangChain + FAISS RAG engine
-│   │   ├── data_ingestion.py    # Document loader & chunker
-│   │   └── prompts.py           # System prompts
-│   ├── newsletter/
-│   │   ├── generator.py         # HTML newsletter builder
-│   │   ├── scraper.py           # RSS + web scraper
-│   │   └── sharepoint_uploader.py  # MS SharePoint integration
-│   ├── automation/
-│   │   ├── scheduler.py         # Daily automation pipeline
-│   │   └── pipeline.py          # Orchestrator
-│   └── app.py                   # Streamlit UI
-├── templates/
-│   └── newsletter.html          # Jinja2 HTML template
-├── data/
-│   └── sample_docs/             # Sample energy market reports
-├── tests/
-│   ├── test_rag.py
-│   └── test_newsletter.py
-├── azure-pipelines.yml          # Azure DevOps CI/CD
-├── .env.example
-└── requirements.txt
+                    ┌──────────────────────────────────────────────┐
+                    │                Streamlit UI                  │
+                    └───────────────┬──────────────────────────────┘
+                                    │
+              ┌─────────────────────┴─────────────────────┐
+              │                                            │
+      ┌───────▼────────┐                        ┌──────────▼───────────┐
+      │  RAG engine     │                        │  LangGraph agent      │
+      │ (LCEL, vector)  │                        │ (ReAct, tool-calling) │
+      └───────┬────────┘                        └──────────┬───────────┘
+              │  retrieve                                    │ search_knowledge_base()
+              ▼                                              ▼
+      ┌────────────────────────────────────────────────────────────┐
+      │  Retrieval layer                                           │
+      │   FastEmbed (bge-small, ONNX)  →  FAISS vector index       │
+      │   [optional] BM25 keyword + Ensemble + FlashRank rerank    │
+      └────────────────────────────────────────────────────────────┘
+              ▲                                              │
+              │ ingest / chunk / embed                       ▼
+      ┌───────┴────────┐                          ┌─────────────────────┐
+      │ data/sample_docs│                          │  Groq (GPT-OSS) LLM │
+      │ (16 briefs)     │                          │  answer generation  │
+      └────────────────┘                          └─────────────────────┘
 ```
 
 ---
 
-## 🚀 Quick Start
+## 🚀 Quickstart
 
 ```bash
-# 1. Clone & install
-git clone https://github.com/J4jatin/energy-market-intelligence-copilot
-cd energy-market-intelligence-copilot
+# 1. Create a virtual environment and install
+python -m venv .venv
+.venv\Scripts\activate            # Windows  (source .venv/bin/activate on macOS/Linux)
 pip install -r requirements.txt
 
-# 2. Configure environment
-cp .env.example .env
-# Add your OpenAI API key + SharePoint credentials
+# 2. Configure your (free) Groq API key
+copy .env.example .env            # then edit .env and set GROQ_API_KEY
 
-# 3. Ingest documents into vector store
+# 3. Build the vector index from the sample knowledge base
 python src/chatbot/data_ingestion.py
 
-# 4. Launch the app
+# 4a. Ask a question (plain RAG)
+python -m src.chatbot.rag_engine
+
+# 4b. Ask via the agent (tool-calling)
+python -m src.chatbot.agent
+
+# 4c. Launch the web app
 streamlit run src/app.py
 ```
 
----
-
-## 🤖 RAG Chatbot — How It Works
-
-1. **Ingest**: PDF/TXT energy market reports are chunked and embedded using `sentence-transformers`
-2. **Store**: Embeddings stored in FAISS vector index (local, no cloud needed)
-3. **Retrieve**: On each question, top-k relevant chunks are retrieved
-4. **Generate**: LLM generates answer grounded in retrieved context
-
-```python
-# Example usage
-from src.chatbot.rag_engine import MarketIntelligenceRAG
-
-rag = MarketIntelligenceRAG()
-answer = rag.ask("What is RWE's current renewable energy capacity?")
-print(answer)
-```
+> **LLM:** this project uses **Groq**, which offers a free API tier (no credit card).
+> Get a key at [console.groq.com](https://console.groq.com) and set `GROQ_API_KEY` in `.env`.
 
 ---
 
-## 📰 Newsletter Generator — How It Works
+## 📊 Evaluation
 
-1. **Scrape**: Pulls latest news from energy sector RSS feeds (Reuters Energy, Bloomberg NEF, etc.)
-2. **Summarize**: LLM summarizes articles by competitor
-3. **Render**: Jinja2 renders polished HTML newsletter
-4. **Publish**: Auto-uploads to SharePoint or sends via email
+Retrieval-augmented systems must be **measured**, not assumed. This repo ships a
+dependency-free, RAGAS-style evaluator (`evals/`) that uses an LLM judge to score four
+standard metrics over a golden question set.
 
-```python
-from src.newsletter.generator import NewsletterGenerator
-
-gen = NewsletterGenerator()
-html = gen.generate(topic="German energy market Q2 2025")
-gen.save("newsletter_2025_Q2.html")
+```bash
+python -m evals.run_eval            # score the current pipeline
+python -m evals.run_eval --compare  # controlled A/B: vector-only vs. hybrid+rerank (same judge)
 ```
 
----
+**Production results** (vector-only, 16-doc corpus, judge = `openai/gpt-oss-20b`):
 
-## ⚙️ Automation Pipeline
-
-Runs daily at 07:00 via `schedule`:
-
-```
-[07:00] Scrape RSS feeds → Summarize → Update FAISS index
-[07:05] Generate HTML newsletter
-[07:10] Upload to SharePoint
-[07:15] Send digest email
-```
-
----
-
-## 🔧 Tech Stack
-
-| Layer | Tech |
+| Metric | Score |
 |---|---|
-| AI / RAG | LangChain, FAISS, Sentence Transformers, OpenAI GPT-4o |
-| Automation | Python `schedule`, custom pipeline orchestrator |
-| Newsletter | Jinja2, HTML/CSS, Premailer (email-safe CSS) |
-| Microsoft | SharePoint REST API, MSAL authentication |
-| CI/CD | Azure DevOps Pipelines |
+| Faithfulness | 0.975 |
+| Answer relevancy | 0.988 |
+| Context precision | 0.533 |
+| Context recall | 1.000 |
+
+**A/B finding (an evaluation-driven decision):** a controlled experiment comparing plain
+vector search against hybrid retrieval + cross-encoder reranking — judged by the *same* model —
+showed that on this clean, semantically-distinct corpus, the strong `bge-small` embeddings
+already retrieve near-optimally, and an off-the-shelf (MS-MARCO) reranker **slightly reduced**
+precision and recall. **Reranking is therefore implemented but disabled by default**, and is
+expected to help on larger, noisier corpora. Full numbers: `evals/results/eval_comparison.md`.
+
+---
+
+## 🧠 Tech stack
+
+| Layer | Technology |
+|---|---|
+| LLM | Groq (GPT-OSS, OpenAI-compatible, free tier) |
+| Orchestration | LangChain v1 (LCEL runnables), LangGraph (ReAct agent) |
+| Embeddings | FastEmbed — `bge-small-en-v1.5` (ONNX, no torch) |
+| Vector store | FAISS |
+| Hybrid / rerank | BM25 (`rank-bm25`) + EnsembleRetriever + FlashRank (optional) |
+| Evaluation | Custom LLM-as-judge (RAGAS-style), golden set + A/B mode |
 | UI | Streamlit |
-| Testing | pytest |
+| Tooling | Docker · docker-compose · GitHub Actions CI · pytest |
 
 ---
 
-## 🏢 Relevant Use Cases
+## 📁 Project structure
 
-- **Market Intelligence teams** tracking competitor pricing, capacity expansions, regulatory changes
-- **Internal knowledge bases** — ask questions against proprietary research reports
-- **Weekly automated briefings** delivered to stakeholders via email or SharePoint
+```
+energy-market-intelligence-copilot/
+├── src/
+│   ├── chatbot/
+│   │   ├── rag_engine.py       # LCEL RAG (vector + optional hybrid/rerank)
+│   │   ├── agent.py            # LangGraph ReAct agent over the KB
+│   │   ├── data_ingestion.py   # load → chunk → embed → FAISS
+│   │   └── prompts.py
+│   ├── newsletter/             # HTML newsletter generator + scraper
+│   ├── automation/             # scheduled pipeline
+│   └── app.py                  # Streamlit UI
+├── evals/
+│   ├── evaluator.py            # LLM-as-judge metrics
+│   ├── run_eval.py             # single + A/B evaluation runner
+│   ├── golden_set.json         # 8 reference Q&A pairs
+│   └── results/                # saved scores (JSON + Markdown)
+├── data/sample_docs/           # 16 energy-market knowledge documents
+├── tests/                      # pytest suite (mocked, no network)
+├── Dockerfile · docker-compose.yml
+└── .github/workflows/ci.yml
+```
 
 ---
 
-## 📊 Energy Competitors Tracked
+## 🐳 Run with Docker
 
-- E.ON (Germany)
-- RWE AG
-- Vattenfall
-- Uniper
-- EnBW Energie Baden-Württemberg
-- Octopus Energy
-- EDF
-
----
-
-## 🔐 Environment Variables
-
-```env
-OPENAI_API_KEY=your_key_here
-SHAREPOINT_SITE_URL=https://yourtenant.sharepoint.com/sites/MarketIntelligence
-SHAREPOINT_CLIENT_ID=your_client_id
-SHAREPOINT_CLIENT_SECRET=your_client_secret
-SHAREPOINT_TENANT_ID=your_tenant_id
-EMAIL_SMTP_HOST=smtp.office365.com
-EMAIL_SMTP_USER=your_email
-EMAIL_SMTP_PASS=your_password
+```bash
+# Put your GROQ_API_KEY in .env first
+docker compose up --build
+# open http://localhost:8501
 ```
 
 ---
@@ -172,6 +164,8 @@ EMAIL_SMTP_PASS=your_password
 ```bash
 pytest tests/ -v
 ```
+
+All tests are mocked (no network, no API key needed) and run automatically in CI on every push.
 
 ---
 

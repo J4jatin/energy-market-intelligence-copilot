@@ -5,14 +5,13 @@ Renders the Jinja2 template with scraped market data + AI summary.
 Supports saving to file and uploading to SharePoint.
 """
 
-import os
 import logging
+import os
 from datetime import datetime
 from pathlib import Path
-from typing import Optional, Dict
 
-from jinja2 import Environment, FileSystemLoader
 from dotenv import load_dotenv
+from jinja2 import Environment, FileSystemLoader
 
 load_dotenv()
 logger = logging.getLogger(__name__)
@@ -40,8 +39,8 @@ class NewsletterGenerator:
 
     def generate(
         self,
-        snapshot: Dict,
-        ai_summary: Optional[str] = None,
+        snapshot: dict,
+        ai_summary: str | None = None,
     ) -> str:
         """
         Render newsletter HTML from a market snapshot.
@@ -70,7 +69,7 @@ class NewsletterGenerator:
         logger.info("Newsletter HTML rendered successfully")
         return html
 
-    def save(self, html: str, filename: Optional[str] = None) -> Path:
+    def save(self, html: str, filename: str | None = None) -> Path:
         """Save newsletter HTML to disk."""
         if not filename:
             filename = f"newsletter_{datetime.now().strftime('%Y_W%V')}.html"
@@ -82,15 +81,15 @@ class NewsletterGenerator:
 
     def generate_and_save(
         self,
-        snapshot: Dict,
-        ai_summary: Optional[str] = None,
-        filename: Optional[str] = None,
+        snapshot: dict,
+        ai_summary: str | None = None,
+        filename: str | None = None,
     ) -> Path:
         """Generate and save in one call."""
         html = self.generate(snapshot, ai_summary)
         return self.save(html, filename)
 
-    def _default_summary(self, snapshot: Dict) -> str:
+    def _default_summary(self, snapshot: dict) -> str:
         """Fallback summary when no AI summary is provided."""
         categories = list(snapshot.get("categories", {}).keys())
         total = snapshot.get("total_articles", 0)
@@ -102,7 +101,7 @@ class NewsletterGenerator:
         )
 
 
-def generate_ai_summary(snapshot: Dict) -> str:
+def generate_ai_summary(snapshot: dict) -> str:
     """
     Use OpenAI to generate an executive summary of the market snapshot.
     Falls back to default summary if API key not set.

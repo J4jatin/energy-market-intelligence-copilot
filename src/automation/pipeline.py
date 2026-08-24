@@ -12,10 +12,9 @@ Steps:
 
 import logging
 from datetime import datetime
-from pathlib import Path
 
-from src.newsletter.scraper import get_market_snapshot
 from src.newsletter.generator import NewsletterGenerator, generate_ai_summary
+from src.newsletter.scraper import get_market_snapshot
 from src.newsletter.sharepoint_uploader import SharePointUploader
 
 logger = logging.getLogger(__name__)

@@ -3,11 +3,10 @@ Energy market news scraper.
 Pulls articles from RSS feeds and summarizes them per competitor.
 """
 
-import feedparser
-import requests
 import logging
 from datetime import datetime, timedelta
-from typing import List, Dict
+
+import feedparser
 from bs4 import BeautifulSoup
 
 logger = logging.getLogger(__name__)
@@ -37,7 +36,7 @@ COMPETITOR_KEYWORDS = {
 def fetch_rss_articles(
     max_age_days: int = 7,
     max_per_feed: int = 10,
-) -> List[Dict]:
+) -> list[dict]:
     """
     Fetch recent articles from all RSS feeds.
 
@@ -80,7 +79,7 @@ def fetch_rss_articles(
     return articles
 
 
-def categorize_articles(articles: List[Dict]) -> Dict[str, List[Dict]]:
+def categorize_articles(articles: list[dict]) -> dict[str, list[dict]]:
     """
     Categorize articles by competitor/topic using keyword matching.
 
@@ -110,7 +109,7 @@ def categorize_articles(articles: List[Dict]) -> Dict[str, List[Dict]]:
     return {k: v for k, v in categorized.items() if v}
 
 
-def get_market_snapshot() -> Dict:
+def get_market_snapshot() -> dict:
     """
     Build a complete market snapshot for newsletter generation.
 

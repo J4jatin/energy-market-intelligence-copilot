@@ -3,10 +3,9 @@ Microsoft SharePoint uploader for the newsletter.
 Uses MSAL for OAuth2 authentication + SharePoint REST API.
 """
 
-import os
 import logging
+import os
 from pathlib import Path
-from typing import Optional
 
 import msal
 import requests
@@ -39,7 +38,7 @@ class SharePointUploader:
         self.client_id = os.getenv("SHAREPOINT_CLIENT_ID", "")
         self.client_secret = os.getenv("SHAREPOINT_CLIENT_SECRET", "")
         self.tenant_id = os.getenv("SHAREPOINT_TENANT_ID", "")
-        self._token: Optional[str] = None
+        self._token: str | None = None
 
     def _get_token(self) -> str:
         """Acquire OAuth2 token via MSAL client credentials flow."""

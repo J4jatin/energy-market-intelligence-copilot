@@ -2,7 +2,6 @@
 Tests for the RAG engine (modern LCEL implementation).
 """
 
-import pytest
 from unittest.mock import MagicMock
 
 
@@ -48,8 +47,8 @@ class TestMarketIntelligenceRAG:
 
     def test_ask_when_not_ready_returns_no_context_message(self):
         """When RAG is not initialized, ask() should return a helpful message."""
-        from src.chatbot.rag_engine import MarketIntelligenceRAG
         from src.chatbot.prompts import NO_CONTEXT_RESPONSE
+        from src.chatbot.rag_engine import MarketIntelligenceRAG
 
         rag = MarketIntelligenceRAG.__new__(MarketIntelligenceRAG)
         rag._is_ready = False

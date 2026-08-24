@@ -1,0 +1,11 @@
+services:
+  copilot:
+    build: .
+    container_name: energy-market-copilot
+    ports:
+      - "8501:8501"
+    env_file:
+      - .env            # provides GROQ_API_KEY and GROQ_MODEL
+    volumes:
+      - ./data:/app/data   # persist the built FAISS index + sample docs
+    restart: unless-stopped

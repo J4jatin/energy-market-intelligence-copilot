@@ -2,13 +2,11 @@
 Tests for the newsletter generator.
 """
 
+
 import pytest
-from pathlib import Path
-from unittest.mock import patch, MagicMock
 
 from src.newsletter.generator import NewsletterGenerator
 from src.newsletter.scraper import categorize_articles
-
 
 # ── Fixtures ──────────────────────────────────────────────────────────────────
 

@@ -3,20 +3,18 @@ Document ingestion pipeline for the Market Intelligence RAG system.
 Loads, chunks, embeds, and stores documents in the FAISS vector index.
 """
 
-import os
 import argparse
 import logging
 from pathlib import Path
-from typing import List
 
-from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_community.document_loaders import (
+    DirectoryLoader,
     PyPDFLoader,
     TextLoader,
-    DirectoryLoader,
 )
 from langchain_community.embeddings import FastEmbedEmbeddings
 from langchain_community.vectorstores import FAISS
+from langchain_text_splitters import RecursiveCharacterTextSplitter
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -36,7 +34,7 @@ def get_embeddings():
     return FastEmbedEmbeddings(model_name="BAAI/bge-small-en-v1.5")
 
 
-def load_documents(source_dir: Path) -> List:
+def load_documents(source_dir: Path) -> list:
     """Load all PDF and TXT documents from a directory."""
     documents = []
 
@@ -71,7 +69,7 @@ def load_documents(source_dir: Path) -> List:
     return documents
 
 
-def chunk_documents(documents: List) -> List:
+def chunk_documents(documents: list) -> list:
     """Split documents into overlapping chunks for better retrieval."""
     splitter = RecursiveCharacterTextSplitter(
         chunk_size=CHUNK_SIZE,
@@ -83,7 +81,7 @@ def chunk_documents(documents: List) -> List:
     return chunks
 
 
-def build_or_update_index(chunks: List, embeddings, update: bool = False):
+def build_or_update_index(chunks: list, embeddings, update: bool = False):
     """Build a new FAISS index or add to an existing one."""
     INDEX_DIR.mkdir(parents=True, exist_ok=True)
     index_path = str(INDEX_DIR)

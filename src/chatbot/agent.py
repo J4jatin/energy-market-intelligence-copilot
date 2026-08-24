@@ -74,8 +74,12 @@ class MarketIntelligenceAgent:
             )
 
         @tool
-        def list_tracked_competitors() -> str:
-            """Return the list of energy companies currently covered in the knowledge base."""
+        def list_tracked_competitors(reason: str = "user asked") -> str:
+            """Return the list of energy companies currently covered in the knowledge base.
+
+            Args:
+                reason: Why you're calling this (e.g. "user asked which companies are covered").
+            """
             return ", ".join(TRACKED_COMPETITORS)
 
         model = ChatGroq(
@@ -107,15 +111,20 @@ class MarketIntelligenceAgent:
                 "tool_calls": 0,
                 "messages": [],
             }
-        try:
-            result = self._agent.invoke({"messages": [("user", question)]})
-            messages = result.get("messages", [])
-            answer = messages[-1].content if messages else ""
-            tool_calls = sum(len(getattr(m, "tool_calls", []) or []) for m in messages)
-            return {"answer": answer, "tool_calls": tool_calls, "messages": messages}
-        except Exception as e:
-            logger.error(f"Agent error: {e}")
-            return {"answer": f"Error: {e}", "tool_calls": 0, "messages": []}
+        last_error = None
+        for attempt in range(1, 3):  # small open models occasionally emit malformed
+            try:                      # tool-call JSON; one retry resolves it almost always
+                result = self._agent.invoke({"messages": [("user", question)]})
+                messages = result.get("messages", [])
+                answer = messages[-1].content if messages else ""
+                tool_calls = sum(len(getattr(m, "tool_calls", []) or []) for m in messages)
+                return {"answer": answer, "tool_calls": tool_calls, "messages": messages}
+            except Exception as e:
+                last_error = e
+                logger.warning(f"Agent attempt {attempt} failed: {e}")
+
+        logger.error(f"Agent error after retries: {last_error}")
+        return {"answer": f"Error: {last_error}", "tool_calls": 0, "messages": []}
 
 
 if __name__ == "__main__":

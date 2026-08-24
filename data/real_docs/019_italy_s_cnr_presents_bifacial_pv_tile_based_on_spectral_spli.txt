@@ -1,0 +1,7 @@
+Title: Italy’s CNR presents bifacial PV tile based on spectral splitting
+Source: PV Magazine
+Published: 2026-08-24
+Link: https://www.pv-magazine.com/2026/08/24/italys-cnr-presents-bifacial-pv-tile-based-on-spectral-splitting/
+
+Researchers at Italy’s CNR developed a four-terminal PV tile that uses spectral splitting to direct visible and infrared light to GaAs and bifacial silicon cells, respectively. Outdoor testing confirmed reduced self-shading and enhanced albedo collection, while highlighting opportunities to improve optical efficiency and advance the technology toward commercial applications. 
+ The post  Italy’s CNR presents bifacial PV tile based on spectral splitting  appeared first on  pv magazine Global .

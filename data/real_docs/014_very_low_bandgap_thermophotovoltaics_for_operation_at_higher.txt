@@ -1,0 +1,7 @@
+Title: Very-low-bandgap thermophotovoltaics for operation at higher temperatures
+Source: PV Magazine
+Published: 2026-08-24
+Link: https://www.pv-magazine.com/2026/08/24/very-low-bandgap-thermophotovoltaics-for-operation-at-higher-temperatures/
+
+French researchers have developed very-low-bandgap thermophotovoltaic cells with a barrier structure designed to suppress dark current and enable operation at higher temperatures. The cells showed more than tenfold improved performance over conventional devices at temperatures above 150 K, with a photovoltaic effect observed up to 273 K. 
+ The post  Very-low-bandgap thermophotovoltaics for operation at higher temperatures  appeared first on  pv magazine Global .

@@ -98,11 +98,19 @@ class MarketIntelligenceRAG:
             self._is_ready = True
             logger.info("✅ RAG engine initialized successfully")
         except FileNotFoundError:
-            logger.warning(
-                "⚠️  FAISS index not found. Run data_ingestion.py first:\n"
-                "   python src/chatbot/data_ingestion.py"
-            )
-            self._is_ready = False
+            logger.warning("⚠️  FAISS index not found — building it now from data/ ...")
+            try:
+                from .data_ingestion import DATA_DIR as ING_DATA_DIR
+                from .data_ingestion import ingest
+
+                ingest(source_dir=ING_DATA_DIR)
+                self._vectorstore = self._load_vectorstore()
+                self._retriever = self._build_retriever()
+                self._is_ready = True
+                logger.info("✅ Index built and RAG engine initialized successfully")
+            except Exception as build_error:
+                logger.error(f"Auto-build of index failed: {build_error}")
+                self._is_ready = False
         except Exception as e:
             logger.error(f"Failed to initialize RAG engine: {e}")
             self._is_ready = False
